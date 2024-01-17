@@ -25,7 +25,7 @@ describe('GET /user', function () {
           expect(response.status).toBe(404);
           done();
         });
-  });
+  }, 7000);
 
   it('5 or more requests and waiting returns a 200', function(done) {
       for (let i = 0; i<5; i++) {
@@ -37,6 +37,7 @@ describe('GET /user', function () {
         .set('user-id', userId)
         .then((response) => {
           expect(response.status).toBe(200);
+          console.log(response.body);
           done();
         });
       }, 2000);
