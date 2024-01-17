@@ -12,12 +12,32 @@ const app = express();
 // clears every one second
 
 let numberOfRequestsForUser = {};
+const maxAllowedReqForMin = 5;
+
 setInterval(() => {
     numberOfRequestsForUser = {};
 }, 1000)
 
+//Need to create a application level middleware
+app.use(function(req, res, next) {
+  const user = req.headers["user-id"];
+
+  if (numberOfRequestsForUser[user]) {
+    numberOfRequestsForUser[user] += 1;
+    if(numberOfRequestsForUser[user] > maxAllowedReqForMin) {
+      res.status(404).send('no entry');
+    } else {
+      next();
+    }
+  } else{
+    numberOfRequestsForUser[user] = 1;
+    next();
+  }
+});
+
 app.get('/user', function(req, res) {
-  res.status(200).json({ name: 'john' });
+  const user = req.headers["user-id"];
+  res.status(200).json({ name: 'john' , reqCount : numberOfRequestsForUser[user]});
 });
 
 app.post('/user', function(req, res) {
