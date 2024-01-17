@@ -23,4 +23,10 @@ app.get('/errorCount', function(req, res) {
   res.status(200).json({ errorCount });
 });
 
+app.use((err, req, res, next) => {
+  console.log(err.stack);
+  errorCount += 1;
+  res.status(404).send("errorCount " + errorCount );
+})
+
 module.exports = app;
