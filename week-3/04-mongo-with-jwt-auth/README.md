@@ -1,4 +1,4 @@
-## Create a course selling website
+## Created a course selling website
 
 ### Description
 
